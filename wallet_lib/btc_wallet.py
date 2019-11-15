@@ -44,7 +44,7 @@ class BTCWallet(CMDCaller):
 
     def get_transactions(self, label:str=None, count:int=25, offset:int=0):
         label_str = label or '""'
-        res = self.run(self._GET_TRANSACTIONS_COMMAND, label_str, count, offset)
+        res = self.run(self._GET_TRANSACTIONS_COMMAND, label_str, str(count), str(offset))
         if res.error:
             raise WalletException(reason='Failed to get transactions for {} where count is {} and offset is {}. Reason: {}. Code: {}'.format(
                 label_str, count, offset, res.error, res.code))
@@ -55,7 +55,7 @@ class BTCWallet(CMDCaller):
             raise WalletException(reason='Recipinet is invalid')
         if amount == 0:
             raise WalletException(reason='Amount should be greater than 0')
-        res = self.run(self._SEND_TO_COMMAND, recipient, amount)
+        res = self.run(self._SEND_TO_COMMAND, recipient, str(amount))
         if res.error:
             raise WalletException(reason='Failed to send {} to {}. Reason: {}. Code: {}'.format(
                 amount, recipient, res.error, res.code))
