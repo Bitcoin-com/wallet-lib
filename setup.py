@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='wallet_lib',
-    version='0.1',
+    version='0.9',
     author="Yevhen Fabizhevskyi",
     author_email="fabasoad@gmail.com",
     description="Package to work with hot wallet for different cryptocurrency",
@@ -18,5 +18,5 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.8'
+    python_requires='>=3.6'
  )
