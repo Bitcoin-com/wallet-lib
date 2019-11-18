@@ -11,6 +11,7 @@ class BTCWallet(CMDCaller):
     _GET_BALANCE_COMMAND = 'getbalance'
     _GET_TRANSACTION_COMMAND = 'gettransaction'
     _GET_TRANSACTIONS_COMMAND = 'listtransactions'
+    _GET_TRANSACTIONS_SINCE_COMMAND = 'listsinceblock'
     _CREATE_ADDRESS_COMMAND = 'getnewaddress'
     _SEND_TO_COMMAND = 'sendtoaddress'
     
@@ -60,3 +61,10 @@ class BTCWallet(CMDCaller):
             raise WalletException(reason='Failed to send {} to {}. Reason: {}. Code: {}'.format(
                 amount, recipient, res.error, res.code))
         return res.result
+    
+    def get_transactions_since(self, block_hash=None):
+        res = self.run(self._GET_TRANSACTIONS_SINCE_COMMAND, block_hash)
+        if res.error:
+            raise WalletException(reason='Failed to get transactions since {}. Reason: {}. Code: {}'.format(
+                block_hash, res.error, res.code))
+        return json.loads(res.result)
