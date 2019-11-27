@@ -1,3 +1,7 @@
+class CMDCallerException(Exception):
+    def __init__(self, reason=None):
+        self.reason = reason
+
 class WalletException(Exception):
     def __init__(self, reason=None):
         self.reason = reason

@@ -16,7 +16,7 @@ class BCHWallet(CMDCaller):
     _SEND_FROM_COMMAND = 'sendfrom'
     
     def __init__(self):
-        CMDCaller.__init__(self, 'bitcoin-cli')
+        super().__init__('bitcoin-cli')
 
     def create_address(self, label):
         res = self.run(self._CREATE_ADDRESS_COMMAND, label)

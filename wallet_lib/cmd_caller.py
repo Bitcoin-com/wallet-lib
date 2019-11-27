@@ -1,10 +1,7 @@
 import logging
 import subprocess
 
-class CMDCallerException(Exception):
-
-    def __init__(self, reason=None):
-        super().__init__(reason)
+from .wallet_exceptions import CMDCallerException
 
 class CMDCallerResponse:
 
