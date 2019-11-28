@@ -1,5 +1,5 @@
 # Wallet lib
-[![PyPI version](https://badge.fury.io/py/wallet-lib.svg)](https://badge.fury.io/py/wallet-lib)
+[![PyPI version](https://badge.fury.io/py/wallet-lib.svg)](https://badge.fury.io/py/wallet-lib) ![](https://github.com/Bitcoin-com/wallet_lib/workflows/CI/badge.svg)
 ## Description
 This library contains classes to work with hot wallet for different cryptocurrency.
 ## API Documentation

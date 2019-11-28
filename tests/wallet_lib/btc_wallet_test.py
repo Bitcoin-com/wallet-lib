@@ -4,10 +4,10 @@ from wallet_lib import BCHWallet, BTCWallet
 from unittest import TestCase
 from unittest.mock import patch
 
-class BCHWalletTest(WalletBase, TestCase):
+class BTCWalletTest(WalletBase, TestCase):
 
     def setUp(self):
-        self.wallet_factory = BCHWallet
+        self.wallet_factory = BTCWallet
 
     @patch('subprocess.Popen')
     def test_get_addresses_positive(self, PopenMock):
@@ -15,7 +15,7 @@ class BCHWalletTest(WalletBase, TestCase):
         self.run_positive_case_json(
             PopenMock,
             lambda w: w.get_addresses(label),
-            'getaddressesbyaccount',
+            'getaddressesbylabel',
             label
         )
 
@@ -32,7 +32,7 @@ class BCHWalletTest(WalletBase, TestCase):
             error_bin,
             code,
             error_message,
-            'getaddressesbyaccount',
+            'getaddressesbylabel',
             label
         )
 
@@ -44,15 +44,14 @@ class BCHWalletTest(WalletBase, TestCase):
         error = 'error123'
         error_bin = b'  error123  '
         code = 123
-        error_message = 'Failed to send {} from {} to {}. Reason: {}. Code: {}'.format(amount, sender, recipient, error, code)
+        error_message = 'Failed to send {} to {}. Reason: {}. Code: {}'.format(amount, recipient, error, code)
         self.run_negative_case(
             PopenMock,
             lambda w: w.send(sender=sender, recipient=recipient, amount=amount),
             error_bin,
             code,
             error_message,
-            'sendfrom',
-            sender,
+            'sendtoaddress',
             recipient,
             str(amount)
         )

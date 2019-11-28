@@ -49,7 +49,7 @@ class BCHWallet(CMDCaller):
         if res.error:
             raise WalletException(reason='Failed to get transactions for {} where count is {} and offset is {}. Reason: {}. Code: {}'.format(
                 label_str, count, offset, res.error, res.code))
-        return res.result
+        return json.loads(res.result)
 
     def send(self, sender:str=None, recipient:str=None, amount:int=0):
         if sender is None:
