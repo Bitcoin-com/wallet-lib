@@ -34,7 +34,7 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         uses: cemkiy/action-slacker@master
         with:
-          channel: ${{ secrets.SLACK_CHANNEL }}
+          channel: '#games-ci'
           icon_url: 'https://img.icons8.com/dusk/64/000000/thumbs-down.png'
           username: $GITHUB_ACTOR
       - name: Slack notification Success
@@ -43,6 +43,6 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         uses: cemkiy/action-slacker@master
         with:
-          channel: ${{ secrets.SLACK_CHANNEL }}
+          channel: '#games-ci'
           icon_url: 'https://img.icons8.com/dusk/64/000000/facebook-like.png'
           username: $GITHUB_ACTOR
