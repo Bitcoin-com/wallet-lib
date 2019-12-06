@@ -35,8 +35,10 @@ jobs:
         uses: cemkiy/action-slacker@master
         with:
           channel: '#games-ci'
-          icon_url: 'https://img.icons8.com/dusk/64/000000/thumbs-down.png'
-          username: $GITHUB_ACTOR
+          icon_url: 'http://pluspng.com/img-png/allure-med-spa-vector-png-github-head-logo-logo-256.png'
+          username: GitHub CI
+          color: '#a30200'
+          author_name: $GITHUB_ACTOR
       - name: Slack notification Success
         if: success()
         env:
@@ -44,5 +46,18 @@ jobs:
         uses: cemkiy/action-slacker@master
         with:
           channel: '#games-ci'
-          icon_url: 'https://img.icons8.com/dusk/64/000000/facebook-like.png'
-          username: $GITHUB_ACTOR
+          icon_url: 'http://pluspng.com/img-png/allure-med-spa-vector-png-github-head-logo-logo-256.png'
+          username: GitHub CI
+          color: '#2eb886'
+          author_name: $GITHUB_ACTOR
+          fallback: 'Required plain-text summary of the attachment.'
+          pretext: 'Optional text that appears above the attachment block'
+          author_link: 'http://jdoe.com/me/'
+          author_icon: 'https://img.icons8.com/metro/26/000000/free-bsd.png'
+          title: 'Slack API Documentation'
+          title_link: 'https://api.slack.com/'
+          text: 'Optional text that appears within the attachment'
+          image_url: 'https://img.icons8.com/wired/64/000000/thumb-up.png'
+          thumb_url: 'https://img.icons8.com/officel/16/000000/good-quality.png'
+          footer: 'Slack API'
+          footer_icon: 'https://img.icons8.com/dotty/80/000000/facebook-like.png'
