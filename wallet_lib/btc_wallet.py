@@ -1,9 +1,9 @@
 import json
 
-from .cmd_caller import CMDCaller
+from .rpc_caller import RPCCaller
 from .wallet_exceptions import WalletException
 
-class BTCWallet(CMDCaller):
+class BTCWallet(RPCCaller):
 
     TICKER_SYMBOL = 'BTC'
 
@@ -15,8 +15,8 @@ class BTCWallet(CMDCaller):
     _CREATE_ADDRESS_COMMAND = 'getnewaddress'
     _SEND_TO_COMMAND = 'sendtoaddress'
     
-    def __init__(self):
-        CMDCaller.__init__(self, 'bitcoin-cli')
+    def __init__(self, username, password, rpc_url="http://127.0.0.1", port="8332"):
+        RPCCaller.__init__(self, username, password, rpc_url, port)
 
     def create_address(self, label):
         res = self.run(self._CREATE_ADDRESS_COMMAND, label)
