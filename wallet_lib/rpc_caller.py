@@ -5,6 +5,7 @@ import json
 
 from .wallet_exceptions import RPCCallerException
 
+
 class RPCCallerResponse:
 
     def __init__(self, response, code):
@@ -14,7 +15,7 @@ class RPCCallerResponse:
         if(response['error'] != None):
             self.error = response['error']['message']
             self.code = response['error']['code']
-            
+
 
 class RPCCaller:
 
@@ -24,15 +25,15 @@ class RPCCaller:
         self.port = port
         self.username = username
         self.password = password
-        self.headers = {'content-type':'application/json'}
+        self.headers = {'content-type': 'application/json'}
 
     def run(self, command, *args):
         try:
-            response = requests.post(self.rpc_url+':'+self.port, 
-                                    data=self._build_data(command, *args), 
-                                    headers=self.headers, 
-                                    auth=(self.username,self.password))
-            return RPCCallerResponse(response.json(),response.status_code)
+            response = requests.post(self.rpc_url+':'+self.port,
+                                     data=self._build_data(command, *args),
+                                     headers=self.headers,
+                                     auth=(self.username, self.password))
+            return RPCCallerResponse(response.json(), response.status_code)
         except Exception as e:
             message = 'Failed to run {} command'.format(command)
             self.log.error(message, e)

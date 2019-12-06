@@ -3,12 +3,14 @@ import subprocess
 
 from .wallet_exceptions import CMDCallerException
 
+
 class CMDCallerResponse:
 
     def __init__(self, result, error, code):
         self.result = result
         self.error = error
         self.code = code
+
 
 class CMDCaller:
 
@@ -18,7 +20,8 @@ class CMDCaller:
 
     def run(self, command, *args):
         try:
-            proc = subprocess.Popen(self._build_args(command, *args), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            proc = subprocess.Popen(self._build_args(
+                command, *args), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             o, e = proc.communicate(timeout=10)
             return CMDCallerResponse(o.decode('ascii').strip(), e.decode('ascii').strip(), proc.returncode)
         except Exception as e:
