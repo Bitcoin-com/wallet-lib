@@ -28,3 +28,14 @@ jobs:
           python -m pip install -r requirements.txt
           python -m pip install -e .
           pytest
+  slackNotification:
+    needs: build
+    name: Slack Notification
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v1
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@master
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
