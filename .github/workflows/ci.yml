@@ -35,6 +35,7 @@ jobs:
         uses: cemkiy/action-slacker@master
         with:
           channel: ${{ secrets.SLACK_CHANNEL }}
+          icon_url: 'https://img.icons8.com/dusk/64/000000/thumbs-down.png'
       - name: Slack notification Success
         if: success()
         env:
@@ -42,3 +43,4 @@ jobs:
         uses: cemkiy/action-slacker@master
         with:
           channel: ${{ secrets.SLACK_CHANNEL }}
+          icon_url: 'https://img.icons8.com/dusk/64/000000/facebook-like.png'
