@@ -1,7 +1,7 @@
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 import logging
 
-from . import WalletAdapterBase
+from .wallet_adapter_base import WalletAdapterBase
 
 
 class RPCAdapterException(Exception):

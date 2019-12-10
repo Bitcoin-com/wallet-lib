@@ -1,6 +1,6 @@
 import json
 
-from .adapters import WalletAdapterBase
+from .adapters.wallet_adapter_base import WalletAdapterBase
 from .wallet_exceptions import WalletException
 
 

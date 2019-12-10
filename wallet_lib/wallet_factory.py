@@ -1,6 +1,6 @@
 from . import BCHWallet, BTCWallet
 from .wallet_exceptions import WalletException, WalletIsNotSupportedException
-from .adapters import RPCAdapter, WalletAdapterBase
+from .adapters.wallet_adapter_base import WalletAdapterBase
 
 
 class WalletFactory:

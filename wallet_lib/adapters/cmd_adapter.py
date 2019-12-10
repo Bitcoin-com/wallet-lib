@@ -1,7 +1,7 @@
 import logging
 import subprocess
 
-from . import WalletAdapterBase
+from .wallet_adapter_base import WalletAdapterBase
 
 
 class CMDAdapterException(Exception):
