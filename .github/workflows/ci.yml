@@ -17,9 +17,9 @@ jobs:
         python-version: [ '3.x' ]
     name: Python ${{ matrix.python-version }} sample
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@master
       - name: Setup python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@master
         with:
           python-version: ${{ matrix.python-version }}
           architecture: x64
@@ -29,24 +29,22 @@ jobs:
           python -m pip install -e .
           pytest
       - name: Slack notification Failure
+        uses: rtCamp/action-slack-notify@master
         if: failure()
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        uses: cemkiy/action-slacker@master
-        with:
-          channel: '#games-ci'
-          icon_url: 'http://pluspng.com/img-png/allure-med-spa-vector-png-github-head-logo-logo-256.png'
-          username: GitHub CI
-          color: '#a30200'
-          title: 'Build failed'
+          SLACK_CHANNEL: '#games-ci'
+          SLACK_USERNAME: GitHub Actions
+          SLACK_COLOR: '#a30200'
+          SLACK_TITLE: Build failed
+          SLACK_ICON: 'http://pluspng.com/img-png/allure-med-spa-vector-png-github-head-logo-logo-256.png'
       - name: Slack notification Success
+        uses: rtCamp/action-slack-notify@master
         if: success()
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        uses: cemkiy/action-slacker@master
-        with:
-          channel: '#games-ci'
-          icon_url: 'http://pluspng.com/img-png/allure-med-spa-vector-png-github-head-logo-logo-256.png'
-          username: GitHub CI
-          color: '#2eb886'
-          title: 'Build passed'
+          SLACK_CHANNEL: '#games-ci'
+          SLACK_USERNAME: GitHub Actions
+          SLACK_COLOR: '#2eb886'
+          SLACK_TITLE: Build passed
+          SLACK_ICON: 'http://pluspng.com/img-png/allure-med-spa-vector-png-github-head-logo-logo-256.png'
