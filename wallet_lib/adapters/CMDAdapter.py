@@ -3,9 +3,11 @@ import subprocess
 
 from . import WalletAdapterBase
 
+
 class CMDAdapterException(Exception):
     def __init__(self, reason=None):
         self.reason = reason
+
 
 class CMDAdapterResponse:
 
@@ -13,6 +15,7 @@ class CMDAdapterResponse:
         self.result = result
         self.error = error
         self.code = code
+
 
 class CMDAdapter(WalletAdapterBase):
 
@@ -22,7 +25,8 @@ class CMDAdapter(WalletAdapterBase):
 
     def run(self, command, *args):
         try:
-            proc = subprocess.Popen(self._build_args(command, *args), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            proc = subprocess.Popen(self._build_args(
+                command, *args), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             o, e = proc.communicate(timeout=10)
             return CMDAdapterResponse(o.decode('ascii').strip(), e.decode('ascii').strip(), proc.returncode)
         except Exception as e:
