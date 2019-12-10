@@ -13,12 +13,10 @@ class WalletFactory:
     def __init__(self):
         pass
 
-    def get(self, ticker_symbol, rpc_user, rpc_password, rpc_url, rpc_port):
+    def get(self, ticker_symbol, adapter: WalletAdapterBase):
         '''
         Returns an instance of class that you can use to work with wallet. It is based on ticker_symbol param.
         '''
-        adapter: WalletAdapterBase = RPCAdapter(
-            rpc_user, rpc_password, rpc_url, rpc_port)
 
         if ticker_symbol is None:
             raise WalletException('Please define ticker symbol')
