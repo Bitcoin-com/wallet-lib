@@ -17,9 +17,9 @@ jobs:
         python-version: [ '3.x' ]
     name: Python ${{ matrix.python-version }} sample
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@master
       - name: Setup python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@master
         with:
           python-version: ${{ matrix.python-version }}
           architecture: x64
@@ -28,3 +28,26 @@ jobs:
           python -m pip install -r requirements.txt
           python -m pip install -e .
           pytest
+  slack:
+    needs: build
+    runs-on: ubuntu-18.04
+    name: Slack notification
+    steps:
+      - name: Slack notification Failure
+        uses: rtCamp/action-slack-notify@master
+        if: failure()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_CHANNEL: '#games-ci'
+          SLACK_USERNAME: GitHub CI
+          SLACK_ICON: 'http://pluspng.com/img-png/allure-med-spa-vector-png-github-head-logo-logo-256.png'
+          SLACK_COLOR: '#a30200'
+      - name: Slack notification Success
+        uses: rtCamp/action-slack-notify@master
+        if: success()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_CHANNEL: '#games-ci'
+          SLACK_USERNAME: GitHub CI
+          SLACK_ICON: 'http://pluspng.com/img-png/allure-med-spa-vector-png-github-head-logo-logo-256.png'
+          SLACK_COLOR: '#2eb886'
