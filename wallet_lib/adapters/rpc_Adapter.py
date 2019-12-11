@@ -19,7 +19,7 @@ class RPCAdapterResponse:
 
 class RPCAdapter(WalletAdapterBase):
     def __init__(self, rpc_user, rpc_password, rpc_url, rpc_port):
-        self.log = logging.getLogger('RPCCaller')
+        self.log = logging.getLogger('RPCAdapter')
         self.rpc_url = rpc_url
         self.rpc_port = rpc_port
         self.rpc_user = rpc_user
