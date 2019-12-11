@@ -49,7 +49,7 @@ class BCHWallet:
     def get_transactions(self, label: str = None, count: int = 25, offset: int = 0):
         label_str = label or '""'
         res = self.adapter.run(
-            self._GET_TRANSACTIONS_COMMAND, label_str, str(count), str(offset))
+            self._GET_TRANSACTIONS_COMMAND, label_str, count, offset)
         if res.error:
             raise WalletException(reason='Failed to get transactions for {} where count is {} and offset is {}. Reason: {}. Code: {}'.format(
                 label_str, count, offset, res.error, res.code))

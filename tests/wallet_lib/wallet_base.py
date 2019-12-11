@@ -100,8 +100,8 @@ class WalletBase:
                 label=label, count=count, offset=offset),
             'listtransactions',
             label,
-            str(count),
-            str(offset)
+            count,
+            offset
         )
 
     @patch('subprocess.Popen')
@@ -123,8 +123,8 @@ class WalletBase:
             error_message,
             'listtransactions',
             label,
-            str(count),
-            str(offset)
+            count,
+            offset
         )
 
     @patch('subprocess.Popen')

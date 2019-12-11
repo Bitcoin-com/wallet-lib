@@ -34,7 +34,7 @@ class RPCAdapter(WalletAdapterBase):
                     self._build_args(command, *args))
             except Exception as e:
                 return RPCAdapterResponse(None, e.message, e.code)
-            return RPCAdapterResponse(response)
+            return RPCAdapterResponse(response[0])
         except Exception as e:
             message = 'Failed to run {} command'.format(command)
             self.log.error(message, e)
