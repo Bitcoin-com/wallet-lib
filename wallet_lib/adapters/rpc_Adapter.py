@@ -32,7 +32,7 @@ class RPCAdapter(WalletAdapterBase):
             try:
                 response = rpc_connection.batch_(
                     self._build_args(command, *args))
-            except Exception as e:
+            except JSONRPCException as e:
                 return RPCAdapterResponse(None, e.message, e.code)
             return RPCAdapterResponse(response[0])
         except Exception as e:

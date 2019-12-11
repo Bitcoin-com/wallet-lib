@@ -21,3 +21,43 @@ class BTCWalletTest(RPCWalletBase, TestCase):
             lambda w: w.get_addresses(label),
             label
         )
+
+    @patch('bitcoinrpc.authproxy.AuthServiceProxy.batch_')
+    def test_get_addresses_negative(self, ASPMock):
+        label = 'abc123'
+        error = 'error123'
+        error_bin = 'error123'
+        code = 123
+        error_message = 'Failed to get addresses by {}. Reason: {}. Code: {}'.format(
+            label, error, code)
+        self.run_negative_case(
+            ASPMock,
+            'getaddressesbylabel',
+            lambda w: w.get_addresses(label),
+            error_bin,
+            code,
+            error_message,
+            label
+        )
+
+    @patch('bitcoinrpc.authproxy.AuthServiceProxy.batch_')
+    def test_send_negative(self, ASPMock):
+        sender = 's123'
+        recipient = 'r123'
+        amount = 1
+        error = 'error123'
+        error_bin = 'error123'
+        code = 123
+        error_message = 'Failed to send {} to {}. Reason: {}. Code: {}'.format(
+            amount, recipient, error, code)
+        self.run_negative_case(
+            ASPMock,
+            'sendtoaddress',
+            lambda w: w.send(
+                sender=sender, recipient=recipient, amount=amount),
+            error_bin,
+            code,
+            error_message,
+            recipient,
+            str(amount)
+        )
