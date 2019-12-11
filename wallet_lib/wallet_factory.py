@@ -1,6 +1,8 @@
+import os
 from . import BCHWallet, BTCWallet
 from .wallet_exceptions import WalletException, WalletIsNotSupportedException
 from .adapters.wallet_adapter_base import WalletAdapterBase
+from .adapters.rpc_adapter import RPCAdapter
 
 
 class WalletFactory:
@@ -13,7 +15,10 @@ class WalletFactory:
     def __init__(self):
         pass
 
-    def get(self, ticker_symbol, adapter: WalletAdapterBase):
+    def get(self, ticker_symbol, adapter: WalletAdapterBase = RPCAdapter(os.environ['RPC_USER'],
+                                                                         os.environ['RPC_PASSWORD'],
+                                                                         os.environ['RPC_URL'],
+                                                                         os.environ['RPC_PORT'])):
         '''
         Returns an instance of class that you can use to work with wallet. It is based on ticker_symbol param.
         '''
