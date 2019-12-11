@@ -1,13 +1,16 @@
+from wallet_lib import WalletFactory
+from wallet_lib.adapters import CMDAdapter
 from wallet_base import WalletBase
-from wallet_lib import BCHWallet, BTCWallet
 
 from unittest import TestCase
 from unittest.mock import patch
 
+
 class BCHWalletTest(WalletBase, TestCase):
 
     def setUp(self):
-        self.wallet_factory = BCHWallet
+        self.cmd_adapter = CMDAdapter('bitcoin-cli')
+        self.wallet_factory = WalletFactory().get('BCH', self.cmd_adapter)
 
     @patch('subprocess.Popen')
     def test_get_addresses_positive(self, PopenMock):
@@ -25,7 +28,8 @@ class BCHWalletTest(WalletBase, TestCase):
         error = 'error123'
         error_bin = b'  error123  '
         code = 123
-        error_message = 'Failed to get addresses by {}. Reason: {}. Code: {}'.format(label, error, code)
+        error_message = 'Failed to get addresses by {}. Reason: {}. Code: {}'.format(
+            label, error, code)
         self.run_negative_case(
             PopenMock,
             lambda w: w.get_addresses(label),
@@ -44,10 +48,12 @@ class BCHWalletTest(WalletBase, TestCase):
         error = 'error123'
         error_bin = b'  error123  '
         code = 123
-        error_message = 'Failed to send {} from {} to {}. Reason: {}. Code: {}'.format(amount, sender, recipient, error, code)
+        error_message = 'Failed to send {} from {} to {}. Reason: {}. Code: {}'.format(
+            amount, sender, recipient, error, code)
         self.run_negative_case(
             PopenMock,
-            lambda w: w.send(sender=sender, recipient=recipient, amount=amount),
+            lambda w: w.send(
+                sender=sender, recipient=recipient, amount=amount),
             error_bin,
             code,
             error_message,
