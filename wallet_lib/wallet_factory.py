@@ -1,10 +1,9 @@
-from . import BCHWallet
-from . import BTCWallet
+from . import BCHWallet, BTCWallet, DASHWallet, ZECWallet
 from .wallet_exceptions import WalletException, WalletIsNotSupportedException
 
 class WalletFactory:
 
-    _SUPPORTED_WALLETS = [ BCHWallet, BTCWallet ]
+    _SUPPORTED_WALLETS = [ BCHWallet, BTCWallet, DASHWallet, ZECWallet ]
 
     def get(self, ticker_symbol):
         '''
