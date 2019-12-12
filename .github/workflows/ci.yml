@@ -34,7 +34,7 @@ jobs:
     name: Slack notification
     steps:
       - name: Slack notification Failure
-        uses: rtCamp/action-slack-notify@v1.0.0
+        uses: rtCamp/action-slack-notify@master
         if: failure()
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
@@ -45,7 +45,7 @@ jobs:
           SLACK_TITLE: Message
           SLACK_MESSAGE: Build failed
       - name: Slack notification Success
-        uses: rtCamp/action-slack-notify@v1.0.0
+        uses: rtCamp/action-slack-notify@master
         if: success()
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
