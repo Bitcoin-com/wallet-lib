@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        python-version: ["3.x"]
+        python-version: [ '3.x' ]
     name: Python ${{ matrix.python-version }}
     steps:
       - uses: actions/checkout@master
@@ -41,8 +41,10 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_CHANNEL: "#games-ci"
           SLACK_USERNAME: GitHub CI
-          SLACK_ICON: "http://pluspng.com/img-png/allure-med-spa-vector-png-github-head-logo-logo-256.png"
-          SLACK_COLOR: "#a30200"
+          SLACK_ICON: 'http://pluspng.com/img-png/allure-med-spa-vector-png-github-head-logo-logo-256.png'
+          SLACK_COLOR: '#a30200'
+          SLACK_TITLE: Message
+          SLACK_MESSAGE: Build failed
       - name: Slack notification Success
         uses: rtCamp/action-slack-notify@master
         if: success()
@@ -50,5 +52,7 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_CHANNEL: "#games-ci"
           SLACK_USERNAME: GitHub CI
-          SLACK_ICON: "http://pluspng.com/img-png/allure-med-spa-vector-png-github-head-logo-logo-256.png"
-          SLACK_COLOR: "#2eb886"
+          SLACK_ICON: 'http://pluspng.com/img-png/allure-med-spa-vector-png-github-head-logo-logo-256.png'
+          SLACK_COLOR: '#2eb886'
+          SLACK_TITLE: Message
+          SLACK_MESSAGE: Build passed
