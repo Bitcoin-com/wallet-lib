@@ -5,7 +5,7 @@ from unittest import TestCase
 from wallet_base import WalletBase
 
 
-class BTCWallet(WalletBase, TestCase):
+class BTCWalletTest(WalletBase, TestCase):
 
     @patch('wallet_lib.adapters.WalletAdapterBase.run')
     def test_create_address_positive(self, Mock):
