@@ -1,20 +1,20 @@
 from . import BCHWallet, BTCWallet, DASHWallet, ZECWallet
 from .wallet_exceptions import WalletException, WalletIsNotSupportedException
+from .adapters.wallet_adapter_base import WalletAdapterBase
+from .adapters.rpc_adapter import RPCAdapter
+
 
 class WalletFactory:
 
-    _SUPPORTED_WALLETS = [ BCHWallet, BTCWallet, DASHWallet, ZECWallet ]
+    _SUPPORTED_WALLETS = [BCHWallet, BTCWallet, DASHWallet, ZECWallet]
 
-    def get(self, ticker_symbol):
-        '''
-        Returns an instance of class that you can use to work with wallet. It is based on ticker_symbol param.
-        '''
-        if ticker_symbol is None:
-            raise WalletException('Please define ticker symbol')
-        found = [w for w in self._SUPPORTED_WALLETS if w.TICKER_SYMBOL == ticker_symbol.upper()]
-        if len(found) == 0:
-            raise WalletIsNotSupportedException()
-        return found[0]()
-    
-    def get_all_wallets(self):
-        return [w() for w in self._SUPPORTED_WALLETS]
+    @staticmethod
+    def get(ticker_symbol, adapter: WalletAdapterBase = RPCAdapter()):
+        '''Returns a wallet instance based on 'ticker_symbol' that you can use to work with your local wallet.'''
+        for wallet in WalletFactory._SUPPORTED_WALLETS:
+            if wallet.TICKER_SYMBOL == ticker_symbol: return wallet(adapter)
+        raise WalletIsNotSupportedException(ticker_symbol)
+
+    @staticmethod
+    def get_all_wallets():
+        return [wallet.TICKER_SYMBOL for wallet in WalletFactory._SUPPORTED_WALLETS]

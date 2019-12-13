@@ -6,7 +6,7 @@ This library contains classes to work with hot wallet for different cryptocurren
 ### Supported cryptocurrencies
 1. BCH
 2. BTC
-3. Dash
+3. DASH
 4. ZEC
 ### Endpoints
 1. `create_address(label)` - creates address by label
