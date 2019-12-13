@@ -29,3 +29,9 @@ class WalletFactoryTest(TestCase):
             WalletFactory().get(ticker_symbol)
         
         assert expected_result == excinfo.value.reason
+    
+    def test_get_all_wallets(self):
+        wallet_types = [type(w) for w in WalletFactory().get_all_wallets()]
+        assert len(wallet_types) == 2
+        assert BTCWallet in wallet_types
+        assert BCHWallet in wallet_types

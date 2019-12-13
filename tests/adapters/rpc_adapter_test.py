@@ -1,4 +1,3 @@
-import os
 import pytest
 from unittest.mock import patch
 
@@ -10,11 +9,7 @@ from bitcoinrpc.authproxy import JSONRPCException
 
 class RPCAdapterTest(TestCase):
     def setUp(self):
-        self.rpc_adapter = RPCAdapter(
-            os.environ['RPC_USER'],
-            os.environ['RPC_PASSWORD'],
-            os.environ['RPC_URL'],
-            os.environ['RPC_PORT'])
+        self.rpc_adapter = RPCAdapter()
 
     @patch('bitcoinrpc.authproxy.AuthServiceProxy.batch_')
     def test_run_positive(self, ASPMock):
@@ -34,7 +29,6 @@ class RPCAdapterTest(TestCase):
         command = 'abc'
         code = 123
         expected_result = 'Failed to run {} command'.format(command)
-        error_bin = 'abc'
 
         ASPMock.return_value = 123
         ASPMock.message = expected_result

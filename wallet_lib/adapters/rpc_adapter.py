@@ -1,5 +1,6 @@
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 import logging
+import os
 
 from .wallet_adapter_base import WalletAdapterBase
 
@@ -18,7 +19,13 @@ class RPCAdapterResponse:
 
 
 class RPCAdapter(WalletAdapterBase):
-    def __init__(self, rpc_user, rpc_password, rpc_url, rpc_port):
+
+    def __init__(
+            self,
+            rpc_user = os.getenv('RPC_USER'),
+            rpc_password = os.getenv('RPC_PASSWORD'),
+            rpc_url = os.environ.get('RPC_HOST', '127.0.0.1'),
+            rpc_port = os.environ.get('RPC_PORT', '8332')):
         self.log = logging.getLogger('RPCAdapter')
         self.rpc_url = rpc_url
         self.rpc_port = rpc_port
