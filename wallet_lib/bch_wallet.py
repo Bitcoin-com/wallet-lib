@@ -8,7 +8,6 @@ class BCHWallet(WalletInterface):
     
     TICKER_SYMBOL = "BCH"
 
-    _GET_ADDRESSES_COMMAND = 'getaddressesbyaccount'
     _GET_BALANCE_COMMAND = 'getbalance'
     _GET_TRANSACTION_COMMAND = 'gettransaction'
     _GET_TRANSACTIONS_COMMAND = 'listtransactions'
@@ -25,14 +24,6 @@ class BCHWallet(WalletInterface):
             raise WalletException('Failed to create address for {}. Reason: {}. Code: {}'.format(
                 label, res.error, res.code))
         return res.result
-
-    def get_addresses(self, label):
-        ''' Get the an array of bitcoin addresses matching label. '''
-        res = self.adapter.run(self._GET_ADDRESSES_COMMAND, label)
-        if res.error:
-            raise WalletException('Failed to get addresses by {}. Reason: {}. Code: {}'.format(
-                label, res.error, res.code))
-        return json.loads(res.result)
 
     def get_balance(self):
         res = self.adapter.run(self._GET_BALANCE_COMMAND)
