@@ -5,7 +5,7 @@ from .wallet_exceptions import WalletException
 from .wallet_interface import WalletInterface
 
 class BCHWallet(WalletInterface):
-    
+
     TICKER_SYMBOL = "BCH"
 
     _GET_BALANCE_COMMAND = 'getbalance'
@@ -13,7 +13,7 @@ class BCHWallet(WalletInterface):
     _GET_TRANSACTIONS_COMMAND = 'listtransactions'
     _GET_TRANSACTIONS_SINCE_COMMAND = 'listsinceblock'
     _CREATE_ADDRESS_COMMAND = 'getnewaddress'
-    _SEND_FROM_COMMAND = 'sendfrom'
+    _SEND_FROM_COMMAND = 'sendtoaddress'
 
     def __init__(self, adapter: WalletAdapterBase):
         self.adapter = adapter

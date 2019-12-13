@@ -5,12 +5,14 @@ from .wallet_adapter_base import WalletAdapterBase
 
 
 class CMDAdapterException(Exception):
+
     def __init__(self, reason):
         self.reason = reason
         super().__init__(reason)
 
 
 class CMDAdapterResponse:
+
     def __init__(self, result, error, code):
         self.result = result
         self.error = error
@@ -18,6 +20,7 @@ class CMDAdapterResponse:
 
 
 class CMDAdapter(WalletAdapterBase):
+    
     def __init__(self, program_name):
         self.log = logging.getLogger('CMDAdapter')
         self.program_name = program_name

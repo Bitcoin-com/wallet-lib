@@ -8,8 +8,7 @@ class ZECWallet(WalletInterface):
 
     TICKER_SYMBOL = 'ZEC'
 
-    _GET_BALANCE_COMMAND = 'getbalance'
-    _GET_TRANSACTION_COMMAND = 'gettransaction'
+    _GET_BALANCE_COMMAND = 'z_getbalance'
     _GET_TRANSACTION_COMMAND = 'gettransaction'
     _LIST_TRANSACTIONS_COMMAND = 'listtransactions'
     _LIST_SINCE_BLOCK_COMMAND = 'listsinceblock'

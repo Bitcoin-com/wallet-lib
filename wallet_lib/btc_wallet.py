@@ -5,10 +5,9 @@ from .wallet_exceptions import WalletException
 from .wallet_interface import WalletInterface
 
 class BTCWallet(WalletInterface):
-    
+
     TICKER_SYMBOL = "BTC"
 
-    _GET_ADDRESSES_COMMAND = 'getaddressesbylabel'
     _GET_BALANCE_COMMAND = 'getbalance'
     _GET_TRANSACTION_COMMAND = 'gettransaction'
     _GET_TRANSACTIONS_COMMAND = 'listtransactions'
@@ -23,14 +22,6 @@ class BTCWallet(WalletInterface):
         res = self.adapter.run(self._CREATE_ADDRESS_COMMAND, label)
         if res.error:
             raise WalletException('Failed to create address for {}. Reason: {}. Code: {}'.format(
-                label, res.error, res.code))
-        return res.result
-
-    def get_addresses(self, label):
-        ''' Get the an array of bitcoin addresses matching label. '''
-        res = self.adapter.run(self._GET_ADDRESSES_COMMAND, label)
-        if res.error:
-            raise WalletException('Failed to get addresses by {}. Reason: {}. Code: {}'.format(
                 label, res.error, res.code))
         return res.result
 
