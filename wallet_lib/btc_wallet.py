@@ -2,9 +2,9 @@ import json
 
 from .adapters.wallet_adapter_base import WalletAdapterBase
 from .wallet_exceptions import WalletException
-from .wallet_interface import WalletInterface
+from .wallet_base import WalletBase
 
-class BTCWallet(WalletInterface):
+class BTCWallet(WalletBase):
 
     TICKER_SYMBOL = "BTC"
 
@@ -65,4 +65,10 @@ class BTCWallet(WalletInterface):
         if res.error:
             raise WalletException('Failed to get transactions since {}. Reason: {}. Code: {}'.format(
                 block_hash, res.error, res.code))
+        return res.result
+
+    def run(self, command, *args):
+        res = self.adapter.run(command, *args)
+        if res.error:
+            raise WalletException('Failed to run command: {}. Reason: {}. Code: {}'.format(command, res.error, res.code))
         return res.result

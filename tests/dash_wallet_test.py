@@ -148,33 +148,6 @@ class DASHWalletTest(WalletBase, TestCase):
         )
 
     @patch('wallet_lib.adapters.WalletAdapterBase.run')
-    def test_get_addresses_positive(self, Mock):
-        label = 'abc123'
-        self.run_positive_case_json(
-            Mock,
-            lambda w: w.run('getaddressesbylabel', label),
-            'getaddressesbylabel',
-            label
-        )
-
-    @patch('wallet_lib.adapters.WalletAdapterBase.run')
-    def test_get_addresses_negative(self, Mock):
-        label = 'abc123'
-        error = 'error123'
-        error_bin = 'error123'
-        code = 123
-        error_message = {'code': code, 'message': error}
-        self.run_negative_case(
-            Mock,
-            lambda w: w.run('getaddressesbylabel', label),
-            error_bin,
-            code,
-            error_message,
-            'getaddressesbylabel',
-            label
-        )
-
-    @patch('wallet_lib.adapters.WalletAdapterBase.run')
     def test_send_negative(self, Mock):
         sender = 's123'
         recipient = 'r123'

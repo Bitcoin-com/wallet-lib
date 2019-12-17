@@ -2,9 +2,9 @@ import json
 
 from .adapters import WalletAdapterBase
 from .wallet_exceptions import WalletException
-from .wallet_interface import WalletInterface
+from .wallet_base import WalletBase
 
-class DASHWallet(WalletInterface):
+class DASHWallet(WalletBase):
 
     TICKER_SYMBOL = 'DASH'
 
@@ -63,3 +63,9 @@ class DASHWallet(WalletInterface):
             raise WalletException('Failed to get transactions since {}. Reason: {}. Code: {}'.format(
                 block_hash, res.error, res.code))
         return json.loads(res.result)
+
+    def run(self, command, *args):
+        res = self.adapter.run(command, *args)
+        if res.error:
+            raise WalletException('Failed to run command: {}. Reason: {}. Code: {}'.format(command, res.error, res.code))
+        return res.result
