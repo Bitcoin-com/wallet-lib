@@ -13,12 +13,12 @@ class BTCWallet(WalletBase):
     _GET_TRANSACTIONS_COMMAND = 'listtransactions'
     _GET_TRANSACTIONS_SINCE_COMMAND = 'listsinceblock'
     _CREATE_ADDRESS_COMMAND = 'getnewaddress'
-    _SEND_TO_COMMAND = 'sendtoaddress'
+    _SEND_TO_ADDRESS_COMMAND = 'sendtoaddress'
 
     def __init__(self, adapter: WalletAdapterBase):
         self.adapter = adapter
 
-    def create_address(self, label):
+    def create_address(self, label=""):
         res = self.adapter.run(self._CREATE_ADDRESS_COMMAND, label)
         if res.error:
             raise WalletException('Failed to create address for {}. Reason: {}. Code: {}'.format(
@@ -48,12 +48,12 @@ class BTCWallet(WalletBase):
                 label_str, count, offset, res.error, res.code))
         return res.result
 
-    def send(self, sender: str = None, recipient: str = None, amount: int = 0):
+    def send(self, recipient:str, amount:int):
         if recipient is None:
             raise WalletException('Recipinet is invalid')
         if amount == 0:
             raise WalletException('Amount should be greater than 0')
-        res = self.adapter.run(self._SEND_TO_COMMAND, recipient, str(amount))
+        res = self.adapter.run(self._SEND_TO_ADDRESS_COMMAND, recipient, str(amount))
         if res.error:
             raise WalletException('Failed to send {} to {}. Reason: {}. Code: {}'.format(
                 amount, recipient, res.error, res.code))

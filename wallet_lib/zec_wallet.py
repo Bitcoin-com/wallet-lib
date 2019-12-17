@@ -18,7 +18,7 @@ class ZECWallet(WalletBase):
     def __init__(self, adapter: WalletAdapterBase):
         self.adapter = adapter
 
-    def create_address(self, label):
+    def create_address(self, label=""):
         res = self.adapter.run(self._GET_NEW_ADDRESS_COMMAND, label)
         if res.error:
             raise WalletException('Failed to create address for {}. Reason: {}. Code: {}'.format(label, res.error, res.code))

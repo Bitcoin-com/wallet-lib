@@ -18,7 +18,7 @@ class DASHWallet(WalletBase):
     def __init__(self, adapter: WalletAdapterBase):
         self.adapter = adapter
 
-    def create_address(self, label):
+    def create_address(self, label=""):
         res = self.adapter.run(self._GET_NEW_ADDRESS_COMMAND, label)
         if res.error:
             raise WalletException('Failed to create address for {}. Reason: {}. Code: {}'.format(label, res.error, res.code))
@@ -44,17 +44,15 @@ class DASHWallet(WalletBase):
                 label_str, count, offset, res.error, res.code))
         return json.loads(res.result)
 
-    def send(self, sender:str=None, recipient:str=None, amount:int=0):
-        if sender is None:
-            raise WalletException('Sender is invalid')
+    def send(self, recipient:str, amount:int):
         if recipient is None:
             raise WalletException('Recipinet is invalid')
         if amount == 0:
             raise WalletException('Amount should be greater than 0')
-        res = self.adapter.run(self._SEND_TO_ADDRESS_COMMAND, sender, recipient, str(amount))
+        res = self.adapter.run(self._SEND_TO_ADDRESS_COMMAND, recipient, str(amount))
         if res.error:
-            raise WalletException('Failed to send {} from {} to {}. Reason: {}. Code: {}'.format(
-                amount, sender, recipient, res.error, res.code))
+            raise WalletException('Failed to send {} to {}. Reason: {}. Code: {}'.format(
+                amount, recipient, res.error, res.code))
         return res.result
 
     def get_transactions_since(self, block_hash):
