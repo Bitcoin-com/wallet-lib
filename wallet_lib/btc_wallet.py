@@ -2,9 +2,9 @@ import json
 
 from .adapters.wallet_adapter_base import WalletAdapterBase
 from .wallet_exceptions import WalletException
-from .wallet_interface import WalletInterface
+from .wallet_base import WalletBase
 
-class BTCWallet(WalletInterface):
+class BTCWallet(WalletBase):
 
     TICKER_SYMBOL = "BTC"
 
@@ -13,12 +13,12 @@ class BTCWallet(WalletInterface):
     _GET_TRANSACTIONS_COMMAND = 'listtransactions'
     _GET_TRANSACTIONS_SINCE_COMMAND = 'listsinceblock'
     _CREATE_ADDRESS_COMMAND = 'getnewaddress'
-    _SEND_TO_COMMAND = 'sendtoaddress'
+    _SEND_TO_ADDRESS_COMMAND = 'sendtoaddress'
 
     def __init__(self, adapter: WalletAdapterBase):
         self.adapter = adapter
 
-    def create_address(self, label):
+    def create_address(self, label=""):
         res = self.adapter.run(self._CREATE_ADDRESS_COMMAND, label)
         if res.error:
             raise WalletException('Failed to create address for {}. Reason: {}. Code: {}'.format(
@@ -48,12 +48,12 @@ class BTCWallet(WalletInterface):
                 label_str, count, offset, res.error, res.code))
         return res.result
 
-    def send(self, sender: str = None, recipient: str = None, amount: int = 0):
+    def send(self, recipient:str, amount:int):
         if recipient is None:
             raise WalletException('Recipinet is invalid')
         if amount == 0:
             raise WalletException('Amount should be greater than 0')
-        res = self.adapter.run(self._SEND_TO_COMMAND, recipient, str(amount))
+        res = self.adapter.run(self._SEND_TO_ADDRESS_COMMAND, recipient, str(amount))
         if res.error:
             raise WalletException('Failed to send {} to {}. Reason: {}. Code: {}'.format(
                 amount, recipient, res.error, res.code))
@@ -65,4 +65,10 @@ class BTCWallet(WalletInterface):
         if res.error:
             raise WalletException('Failed to get transactions since {}. Reason: {}. Code: {}'.format(
                 block_hash, res.error, res.code))
+        return res.result
+
+    def run(self, command, *args):
+        res = self.adapter.run(command, *args)
+        if res.error:
+            raise WalletException('Failed to run command: {}. Reason: {}. Code: {}'.format(command, res.error, res.code))
         return res.result

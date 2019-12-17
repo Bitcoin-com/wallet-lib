@@ -2,9 +2,9 @@ import json
 
 from .adapters import WalletAdapterBase
 from .wallet_exceptions import WalletException
-from .wallet_interface import WalletInterface
+from .wallet_base import WalletBase
 
-class DASHWallet(WalletInterface):
+class DASHWallet(WalletBase):
 
     TICKER_SYMBOL = 'DASH'
 
@@ -18,7 +18,7 @@ class DASHWallet(WalletInterface):
     def __init__(self, adapter: WalletAdapterBase):
         self.adapter = adapter
 
-    def create_address(self, label):
+    def create_address(self, label=""):
         res = self.adapter.run(self._GET_NEW_ADDRESS_COMMAND, label)
         if res.error:
             raise WalletException('Failed to create address for {}. Reason: {}. Code: {}'.format(label, res.error, res.code))
@@ -44,17 +44,15 @@ class DASHWallet(WalletInterface):
                 label_str, count, offset, res.error, res.code))
         return json.loads(res.result)
 
-    def send(self, sender:str=None, recipient:str=None, amount:int=0):
-        if sender is None:
-            raise WalletException('Sender is invalid')
+    def send(self, recipient:str, amount:int):
         if recipient is None:
             raise WalletException('Recipinet is invalid')
         if amount == 0:
             raise WalletException('Amount should be greater than 0')
-        res = self.adapter.run(self._SEND_TO_ADDRESS_COMMAND, sender, recipient, str(amount))
+        res = self.adapter.run(self._SEND_TO_ADDRESS_COMMAND, recipient, str(amount))
         if res.error:
-            raise WalletException('Failed to send {} from {} to {}. Reason: {}. Code: {}'.format(
-                amount, sender, recipient, res.error, res.code))
+            raise WalletException('Failed to send {} to {}. Reason: {}. Code: {}'.format(
+                amount, recipient, res.error, res.code))
         return res.result
 
     def get_transactions_since(self, block_hash):
@@ -63,3 +61,9 @@ class DASHWallet(WalletInterface):
             raise WalletException('Failed to get transactions since {}. Reason: {}. Code: {}'.format(
                 block_hash, res.error, res.code))
         return json.loads(res.result)
+
+    def run(self, command, *args):
+        res = self.adapter.run(command, *args)
+        if res.error:
+            raise WalletException('Failed to run command: {}. Reason: {}. Code: {}'.format(command, res.error, res.code))
+        return res.result
