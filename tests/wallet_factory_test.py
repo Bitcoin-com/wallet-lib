@@ -39,12 +39,6 @@ class WalletFactoryTest(TestCase):
         dash_wallet = wallet_factory.get('DASH')
         assert type(dash_wallet) == DASHWallet
 
-        btc_wallet_factory = WalletFactory.get('ZEC')
-        assert type(btc_wallet_factory) == ZECWallet
-
-        btc_wallet_factory = WalletFactory.get('DASH')
-        assert type(btc_wallet_factory) == DASHWallet
-
     def test_get_negative_wallet_not_support_exception(self):
         wallet_factory = WalletFactory()
         ticker_symbol = 'ABC'
