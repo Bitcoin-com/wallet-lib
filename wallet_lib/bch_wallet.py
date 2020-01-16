@@ -50,7 +50,7 @@ class BCHWallet(WalletBase):
 
     def send(self, recipient:str, amount:int):
         if recipient is None:
-            raise WalletException('Recipinet is invalid')
+            raise WalletException('Recipient is invalid')
         if amount == 0:
             raise WalletException('Amount should be greater than 0')
         res = self.adapter.run(self._SEND_TO_ADDRESS_COMMAND, recipient, str(amount))
