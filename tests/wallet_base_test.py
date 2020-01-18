@@ -3,7 +3,6 @@ import abc
 
 from unittest.mock import patch
 from unittest import TestCase
-from wallet_test_base import WalletTestBase
 from wallet_lib.wallet_exceptions import WalletException
 from wallet_lib.wallet_base import WalletBase
 from wallet_lib import WalletFactory
