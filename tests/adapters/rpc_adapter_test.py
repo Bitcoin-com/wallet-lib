@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from unittest import TestCase
 from wallet_lib.adapters import RPCAdapter
-from wallet_lib.adapters.rpc_adapter import RPCAdapterException
+from wallet_lib.adapters.rpc_adapter import RPCAdapterException, RPCAdapterResponse
 from bitcoinrpc.authproxy import JSONRPCException
 
 
@@ -20,9 +20,11 @@ class RPCAdapterTest(TestCase):
         ASPMock.return_value = [expected_result]
         ASPMock.code = code
 
-        actual_result = self.rpc_adapter.run([command])
+        actual_response = self.rpc_adapter.run([command])
         ASPMock.assert_called_once_with([[[command]]])
-        assert expected_result == actual_result.result
+        expected_response = RPCAdapterResponse(expected_result, error=None, code=code)
+        assert actual_response.error == expected_response.error == None
+        assert actual_response.result == expected_response.result == expected_result
 
     @patch('bitcoinrpc.authproxy.AuthServiceProxy.batch_')
     def test_run_negative(self, ASPMock):

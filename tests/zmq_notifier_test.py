@@ -119,3 +119,5 @@ class ZMQNotifierTest(TestCase):
     #         mockLoop.create_task.assert_called_once_with(notifier.handle())
     #         mockLoop.run_until_complete.assert_called_once_with(notifier.stop())
     #         assert loop is mockLoop()
+
+    
