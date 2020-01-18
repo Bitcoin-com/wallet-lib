@@ -5,8 +5,10 @@ from .wallet_adapter_base import WalletAdapterBase
 
 
 class CMDAdapterException(Exception):
-    def __init__(self, reason=None):
+
+    def __init__(self, reason):
         self.reason = reason
+        super().__init__(reason)
 
 
 class CMDAdapterResponse:
@@ -18,7 +20,7 @@ class CMDAdapterResponse:
 
 
 class CMDAdapter(WalletAdapterBase):
-
+    
     def __init__(self, program_name):
         self.log = logging.getLogger('CMDAdapter')
         self.program_name = program_name
@@ -32,7 +34,7 @@ class CMDAdapter(WalletAdapterBase):
         except Exception as e:
             message = 'Failed to run {} command'.format(command)
             self.log.error(message, e)
-            raise CMDAdapterException(reason=message)
+            raise CMDAdapterException(message)
 
     def _build_args(self, command, *args):
         return [self.program_name, command, *args]

@@ -28,7 +28,7 @@ jobs:
           python -m pip install -r requirements.txt
           python -m pip install -e .
           source .envrc
-          pytest --cov=wallet_lib --cov-fail-under=65.85 ./tests/
+          pytest --cov=wallet_lib --cov-fail-under=90.00 ./tests/
   slack:
     needs: build
     runs-on: ubuntu-18.04

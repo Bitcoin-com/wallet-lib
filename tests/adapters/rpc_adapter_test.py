@@ -32,7 +32,7 @@ class RPCAdapterTest(TestCase):
 
         ASPMock.return_value = 123
         ASPMock.message = expected_result
-        ASPMock.side_effect = RPCAdapterException(reason=expected_result)
+        ASPMock.side_effect = RPCAdapterException(expected_result)
         ASPMock.code = code
 
         with pytest.raises(RPCAdapterException) as exc_info:

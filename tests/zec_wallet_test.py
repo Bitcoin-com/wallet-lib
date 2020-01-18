@@ -5,7 +5,7 @@ from unittest import TestCase
 from wallet_base import WalletBase
 
 
-class BTCWalletTest(WalletBase, TestCase):
+class ZECWalletTest(WalletBase, TestCase):
 
     @patch('wallet_lib.adapters.WalletAdapterBase.run')
     def test_create_address_positive(self, Mock):
@@ -21,8 +21,8 @@ class BTCWalletTest(WalletBase, TestCase):
     def test_get_balance_positive(self, Mock):
         self.run_positive_case(
             Mock,
-            lambda w: w.run('getbalance'),
-            'getbalance'
+            lambda w: w.run('z_getbalance'),
+            'z_getbalance'
         )
 
     @patch('wallet_lib.adapters.WalletAdapterBase.run')
@@ -85,11 +85,11 @@ class BTCWalletTest(WalletBase, TestCase):
         error_message = {'code': code, 'message': error}
         self.run_negative_case(
             Mock,
-            lambda w: w.run('getbalance'),
+            lambda w: w.run('z_getbalance'),
             error_bin,
             code,
             error_message,
-            'getbalance'
+            'z_getbalance'
         )
 
     @patch('wallet_lib.adapters.WalletAdapterBase.run')

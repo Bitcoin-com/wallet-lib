@@ -6,8 +6,10 @@ from .wallet_adapter_base import WalletAdapterBase
 
 
 class RPCAdapterException(Exception):
-    def __init__(self, reason=None):
+
+    def __init__(self, reason):
         self.reason = reason
+        super().__init__(reason)
 
 
 class RPCAdapterResponse:
@@ -19,15 +21,14 @@ class RPCAdapterResponse:
 
 
 class RPCAdapter(WalletAdapterBase):
-
-    def __init__(
-            self,
+    
+    def __init__(self,
             rpc_user = os.getenv('RPC_USER'),
             rpc_password = os.getenv('RPC_PASSWORD'),
-            rpc_url = os.environ.get('RPC_HOST', '127.0.0.1'),
+            rpc_host = os.environ.get('RPC_HOST', '127.0.0.1'),
             rpc_port = os.environ.get('RPC_PORT', '8332')):
         self.log = logging.getLogger('RPCAdapter')
-        self.rpc_url = rpc_url
+        self.rpc_host = rpc_host
         self.rpc_port = rpc_port
         self.rpc_user = rpc_user
         self.rpc_password = rpc_password
@@ -35,7 +36,7 @@ class RPCAdapter(WalletAdapterBase):
     def run(self, command, *args):
         try:
             rpc_connection = AuthServiceProxy(
-                "http://%s:%s@%s:%s" % (self.rpc_user, self.rpc_password, self.rpc_url, self.rpc_port))
+                "http://%s:%s@%s:%s" % (self.rpc_user, self.rpc_password, self.rpc_host, self.rpc_port))
             try:
                 response = rpc_connection.batch_(
                     self._build_args(command, *args))
@@ -45,7 +46,7 @@ class RPCAdapter(WalletAdapterBase):
         except Exception as e:
             message = 'Failed to run {} command'.format(command)
             self.log.error(message, e)
-            raise RPCAdapterException(reason=message)
+            raise RPCAdapterException(message)
 
     def _build_args(self, command, *args):
         data = list(args)

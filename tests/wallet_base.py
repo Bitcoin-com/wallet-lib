@@ -15,7 +15,7 @@ class WalletBase:
 
     def run_positive_case(self, Mock, command_run, *args):
         self.run_positive_case_internal(
-            'result123', 'result123', Mock,  command_run, *args)
+            'result123', 'result123', Mock, command_run, *args)
 
     def run_positive_case_internal(self, expected_result, result_bin, Mock, command_run, *args):
         wallet = WalletAdapterBase()

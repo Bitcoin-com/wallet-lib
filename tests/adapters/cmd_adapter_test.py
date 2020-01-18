@@ -36,7 +36,7 @@ class CMDAdapterTest(TestCase):
         expected_result = "Failed to run %s command" % (command)
 
         PopenMock.return_value.returncode = 123
-        PopenMock.side_effect = CMDAdapterException(reason=expected_result)
+        PopenMock.side_effect = CMDAdapterException(expected_result)
         PopenMock.return_value.communicate.return_value = (result_bin, b'')
         with pytest.raises(CMDAdapterException) as exc_info:
             self.cmd_adapter.run(command)
