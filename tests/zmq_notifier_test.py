@@ -1,4 +1,7 @@
+import time
 import pytest
+import asyncio
+import pytest_asyncio.plugin
 
 from unittest import TestCase
 from unittest.mock import patch, Mock
@@ -7,18 +10,6 @@ from wallet_lib import ZMQNotifer
 # For constants
 import zmq
 import signal
-
-# TODO:
-"""
-    zmqnotifier:
-    add example
-
-    add test case: error callback called
-    add test case: topic callbacks called
-    add test case: consume topic message
-
-    add test case: wallet_base_test + ***_wallet_test.py
-"""
 
 class ZMQNotifierTest(TestCase):
 
@@ -89,35 +80,21 @@ class ZMQNotifierTest(TestCase):
             
             TestCase().assertDictEqual(expected, actual)
 
-    # @patch('asyncio.get_event_loop')
-    # def test_get_positive_zmq_start_forever(self, mock_loop):
-    #     mock_loop.return_value.add_signal_handler()
-    #     mock_loop.return_value.create_task()
-    #     mock_loop.return_value.run_until_complete()
-    #     mock_loop.return_value.run_forever()
+    @patch('asyncio.get_event_loop')
+    @patch('wallet_lib.ZMQNotifer.handle')
+    def test_get_positive_zmq_notifier_start(self, mock_loop, _):
+        mock_loop.return_value.add_signal_handler
+        mock_loop.return_value.create_task
+        mock_loop.return_value.run_until_complete
+        mock_loop.return_value.run_forever
         
-    #     with patch('zmq.asyncio.Context') as zmq_socket:
-    #         zmq_socket.return_value.connect()
-    #         notifier = ZMQNotifer("zmq_address")
-    #         notifier.start() # Ensures that 'forever' is True by default
-    #         mock_loop.add_signal_handler.assert_called_once_with(signal.SIGINT, notifier.stop)
-    #         mock_loop.create_task.assert_called_once_with(notifier.handle())
-    #         mock_loop.run_until_complete.assert_called_once_with(notifier.stop())
-    #         mock_loop.run_forever.assert_called_once()
+        with patch('zmq.asyncio.Context') as zmq_socket:
+            zmq_socket.return_value.connect()
+            notifier = ZMQNotifer("zmq_address")
+            loop = notifier.start() # loop is Default
+            loop.add_signal_handler.assert_called_once_with(signal.SIGINT, notifier.stop)
+            loop.run_forever.assert_called_once()
 
-    # @patch('asyncio.get_event_loop')
-    # def test_get_positive_zmq_start(self, mockLoop):
-    #     ml = mockLoop.return_value
-    #     ml.add_signal_handler.return_value = None
-    #     ml.create_task.return_value = None
-    #     ml.run_until_complete.return_value = None
-    #     ml.run_forever.return_value = None
-    #     with patch('zmq.asyncio.Context'):
-    #         notifier = ZMQNotifer("zmq_address")
-    #         loop = notifier.start(False)
-    #         mockLoop.add_signal_handler.assert_called_once_with(signal.SIGINT, notifier.stop)
-    #         mockLoop.create_task.assert_called_once_with(notifier.handle())
-    #         mockLoop.run_until_complete.assert_called_once_with(notifier.stop())
-    #         assert loop is mockLoop()
-
-    
+            loop2 = notifier.start(loop=False)
+            loop2.add_signal_handler.assert_called_with(signal.SIGINT, notifier.stop)
+            loop2.run_until_complete.assert_called_once()

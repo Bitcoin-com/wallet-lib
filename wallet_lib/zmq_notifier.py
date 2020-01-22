@@ -63,13 +63,13 @@ class ZMQNotifer():
                 if tb: traceback.print_exc()
             self.stop()
 
-    def start(self, forever=True):
-        loop = asyncio.get_event_loop()
-        loop.add_signal_handler(signal.SIGINT, self.stop)
-        loop.create_task(self.handle())
-        if forever: loop.run_forever()
-        else: loop.run_until_complete(self.stop())
-        return loop
+    def start(self, loop=True):
+        event_loop = asyncio.get_event_loop()
+        event_loop.add_signal_handler(signal.SIGINT, self.stop)
+        event_loop.create_task(self.handle())
+        if loop: event_loop.run_forever()
+        else: event_loop.run_until_complete(self.stop())
+        return event_loop
 
     def stop(self):
         self.zmqContext.destroy()
