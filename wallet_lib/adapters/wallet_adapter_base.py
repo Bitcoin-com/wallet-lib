@@ -1,4 +1,2 @@
 class WalletAdapterBase:
-
-    def run(self, command, *args):
-        pass
+    def run(self, command, *args): pass
