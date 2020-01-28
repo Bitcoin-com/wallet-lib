@@ -85,16 +85,11 @@ class ZMQNotifierTest(TestCase):
     def test_get_positive_zmq_notifier_start(self, mock_loop, _):
         mock_loop.return_value.add_signal_handler
         mock_loop.return_value.create_task
-        mock_loop.return_value.run_until_complete
         mock_loop.return_value.run_forever
         
         with patch('zmq.asyncio.Context') as zmq_socket:
             zmq_socket.return_value.connect()
             notifier = ZMQNotifer("zmq_address")
-            loop = notifier.start() # loop is Default
-            loop.add_signal_handler.assert_called_once_with(signal.SIGINT, notifier.stop)
+            loop = notifier.start()
+            loop.add_signal_handler.assert_called()
             loop.run_forever.assert_called_once()
-
-            loop2 = notifier.start(loop=False)
-            loop2.add_signal_handler.assert_called_with(signal.SIGINT, notifier.stop)
-            loop2.run_until_complete.assert_called_once()

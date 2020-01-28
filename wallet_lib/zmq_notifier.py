@@ -18,19 +18,21 @@ class ZMQNotifer():
     TOPIC_RAWBLOCK = 'rawblock'
     TOPIC_RAWTX = 'rawtx'
 
-    def __init__(self, zmq_address, topics=[TOPIC_BLOCKHASH, TOPIC_TXID, TOPIC_RAWBLOCK, TOPIC_RAWBLOCK], **kwargs):
+    def __init__(self, zmq_address, topics=[TOPIC_BLOCKHASH, TOPIC_TXID, TOPIC_RAWBLOCK, TOPIC_RAWBLOCK], loop=None, verbose=False, **kwargs):
         self.zmqContext = zmq.asyncio.Context()
         self.topic_set = set([s.strip() for s in topics])
+        self.loop = loop if loop else asyncio.get_event_loop()
+        self.verbose = verbose
 
-        self.zmqSubSocket = self.zmqContext.socket(zmq.SUB)
-        self.zmqSubSocket.setsockopt(zmq.RCVHWM, 0)
         earg = 'error_callback'
         ecb = [kwargs[earg]] if earg in kwargs else []
         self.listeners = {'_error_': ecb }
 
+        self.zmqSubSocket = self.zmqContext.socket(zmq.SUB)
+        self.zmqSubSocket.setsockopt(zmq.RCVHWM, 0)
         for topic in self.topic_set:
             targ = topic + '_callback'
-            self.listeners[topic] = [kwargs[targ]] if targ in kwargs else []
+            self.listeners[topic] = [kwargs[targ]] if targ in kwargs else[]
             self.zmqSubSocket.setsockopt_string(zmq.SUBSCRIBE, topic)
 
         self.zmqSubSocket.connect(zmq_address)
@@ -50,26 +52,30 @@ class ZMQNotifer():
             if topic in self.topic_set:
                 hex_body = binascii.hexlify(body)
                 for callback in self.listeners[topic]:
-                    if asyncio.iscoroutinefunction(callback):
-                        await callback(hex_body, body)
-                    else: callback(hex_body, body)
-
-            asyncio.ensure_future(self.handle())
+                    if self.verbose:
+                        if asyncio.iscoroutinefunction(callback):
+                            asyncio.ensure_future(callback(hex_body, body))
+                        else: callback(hex_body, body)
+                    else:
+                        if asyncio.iscoroutinefunction(callback):
+                            asyncio.ensure_future(callback(hex_body.decode('utf-8')))
+                        else: callback(hex_body.decode('utf-8'))
         except Exception as e:
-            for callback in self.listeners['error']:
+            for callback in self.listeners['_error_']:
                 if asyncio.iscoroutinefunction(callback):
                     tb = await callback(e)
                 else: tb = callback(e)
                 if tb: traceback.print_exc()
-            self.stop()
+        self.loop.create_task(self.handle())
+        # asyncio.ensure_future(self.handle())
 
-    def start(self, loop=True):
-        event_loop = asyncio.get_event_loop()
-        event_loop.add_signal_handler(signal.SIGINT, self.stop)
-        event_loop.create_task(self.handle())
-        if loop: event_loop.run_forever()
-        else: event_loop.run_until_complete(self.stop())
-        return event_loop
+    def start(self):
+        self.loop.add_signal_handler(signal.SIGTERM, self.stop)
+        self.loop.add_signal_handler(signal.SIGINT, self.stop)
+        self.loop.create_task(self.handle())
+        self.loop.run_forever()
+        return self.loop
 
     def stop(self):
+        self.loop.stop()
         self.zmqContext.destroy()
