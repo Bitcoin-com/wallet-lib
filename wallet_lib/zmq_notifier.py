@@ -11,7 +11,7 @@ import sys
 import zmq
 import os
 
-class ZMQNotifer():
+class ZMQNotifier():
 
     TOPIC_BLOCKHASH = 'hashblock'
     TOPIC_TXID = 'hashtx'
@@ -55,16 +55,16 @@ class ZMQNotifer():
                 for callback in self.listeners[topic]:
                     if self.verbose:
                         if asyncio.iscoroutinefunction(callback):
-                            asyncio.ensure_future(callback(hex_body, body))
+                            self.loop.create_task(callback(hex_body, body))
                         else: callback(hex_body, body)
                     else:
                         if asyncio.iscoroutinefunction(callback):
-                            asyncio.ensure_future(callback(hex_body.decode('utf-8')))
+                            self.loop.create_task(callback(hex_body.decode('utf-8')))
                         else: callback(hex_body.decode('utf-8'))
         except Exception as e:
             for callback in self.listeners['_error_']:
                 if asyncio.iscoroutinefunction(callback):
-                    tb = await callback(e)
+                    tb = self.loop.create_task(callback(e))
                 else: tb = callback(e)
                 if tb: traceback.print_exc()
         if self.auto: self.loop.create_task(self.handle())

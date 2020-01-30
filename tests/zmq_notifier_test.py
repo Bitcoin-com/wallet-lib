@@ -5,7 +5,7 @@ import pytest_asyncio.plugin
 
 from unittest import TestCase
 from unittest.mock import patch, Mock
-from wallet_lib import ZMQNotifer
+from wallet_lib import ZMQNotifier
 
 # For constants
 import zmq
@@ -17,7 +17,7 @@ class ZMQNotifierTest(TestCase):
         with patch('zmq.asyncio.Context') as zmq_socket:
             zmq_socket.return_value.connect()
             fake_url= "protocol://ip_address:port"
-            notifier = ZMQNotifer(fake_url)
+            notifier = ZMQNotifier(fake_url)
             notifier.zmqSubSocket.setsockopt.assert_called_once_with(zmq.RCVHWM, 0)
             notifier.zmqSubSocket.connect.assert_called_once_with(fake_url)
             notifier.zmqContext.socket.assert_called_once_with(zmq.SUB)
@@ -26,7 +26,7 @@ class ZMQNotifierTest(TestCase):
         with patch('zmq.asyncio.Context') as zmq_socket:
             zmq_socket.return_value.setsockopt_string()
             topics = ['topic1', 'topic2']
-            notifier = ZMQNotifer("zmq_address", topics=topics)
+            notifier = ZMQNotifier("zmq_address", topics=topics)
             notifier.zmqSubSocket.setsockopt_string.assert_any_call(zmq.SUBSCRIBE, topics[0])
             notifier.zmqSubSocket.setsockopt_string.assert_any_call(zmq.SUBSCRIBE, topics[1])
 
@@ -36,7 +36,7 @@ class ZMQNotifierTest(TestCase):
             t2cb = Mock(return_value=None)
             ecb = Mock(return_value=None)
 
-            actual = ZMQNotifer(
+            actual = ZMQNotifier(
                 "zmq_address",
                 topics=['topic1', 'topic2'],
                 topic1_callback=t1cb,
@@ -61,7 +61,7 @@ class ZMQNotifierTest(TestCase):
             ecb1 = Mock(return_value=None)
             ecb2 = Mock(return_value=None)
 
-            notifier = ZMQNotifer("zmq_address", topics=['topic1', 'topic2'])
+            notifier = ZMQNotifier("zmq_address", topics=['topic1', 'topic2'])
 
             notifier.add_callback('topic1', t1cb1)
             notifier.add_callback('topic1', t1cb2)
@@ -81,7 +81,7 @@ class ZMQNotifierTest(TestCase):
             TestCase().assertDictEqual(expected, actual)
 
     @patch('asyncio.get_event_loop')
-    @patch('wallet_lib.ZMQNotifer.handle')
+    @patch('wallet_lib.ZMQNotifier.handle')
     def test_get_positive_zmq_notifier_start(self, mock_loop, _):
         mock_loop.return_value.add_signal_handler
         mock_loop.return_value.create_task
@@ -89,7 +89,7 @@ class ZMQNotifierTest(TestCase):
         
         with patch('zmq.asyncio.Context') as zmq_socket:
             zmq_socket.return_value.connect()
-            notifier = ZMQNotifer("zmq_address")
+            notifier = ZMQNotifier("zmq_address")
             loop = notifier.start()
             loop.add_signal_handler.assert_called()
             loop.run_forever.assert_called_once()

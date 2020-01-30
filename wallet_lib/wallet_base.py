@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 
 from .adapters import WalletAdapterBase
 from .wallet_exceptions import WalletException
-from .zmq_notifier import ZMQNotifer
+from .zmq_notifier import ZMQNotifier
 
 class WalletBase(metaclass=ABCMeta):
 
@@ -31,4 +31,4 @@ class WalletBase(metaclass=ABCMeta):
     def run(self, *args): pass
 
     def get_zmq_notifier(self, **kwargs):
-        return ZMQNotifer(**kwargs)
+        return ZMQNotifier(**kwargs)
