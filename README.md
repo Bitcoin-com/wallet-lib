@@ -16,4 +16,4 @@ This library contains classes to work with hot wallet for different cryptocurren
 1. `wallet.send(address, amount)` - sends some amount to an address.
 1. `wallet.get_transactions_since(block_hash)` - gets all transactions since block block_hash, or all transactions if block_hash is None. (No mempool transactions)
 1. `wallet.run(command, args...)` - runs a custom command with the arguments specified
-1. `wallet.get_zmq_notifier(zmq_address, )`
+1. `wallet.get_zmq_notifier(zmq_address, topics=[TOPIC_BLOCKHASH,...], loop=None, verbose=False)` - API for receiving topics from specified zmq address (ipc, tpc and udp supported).

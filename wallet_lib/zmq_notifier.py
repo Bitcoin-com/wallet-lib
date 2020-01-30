@@ -23,6 +23,7 @@ class ZMQNotifer():
         self.topic_set = set([s.strip() for s in topics])
         self.loop = loop if loop else asyncio.get_event_loop()
         self.verbose = verbose
+        self.auto = False
 
         earg = 'error_callback'
         ecb = [kwargs[earg]] if earg in kwargs else []
@@ -66,10 +67,10 @@ class ZMQNotifer():
                     tb = await callback(e)
                 else: tb = callback(e)
                 if tb: traceback.print_exc()
-        self.loop.create_task(self.handle())
-        # asyncio.ensure_future(self.handle())
+        if self.auto: self.loop.create_task(self.handle())
 
     def start(self):
+        self.auto = True
         self.loop.add_signal_handler(signal.SIGTERM, self.stop)
         self.loop.add_signal_handler(signal.SIGINT, self.stop)
         self.loop.create_task(self.handle())
