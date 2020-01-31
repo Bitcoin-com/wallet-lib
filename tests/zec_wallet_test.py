@@ -2,10 +2,10 @@ import pytest
 from unittest.mock import patch
 
 from unittest import TestCase
-from wallet_base import WalletBase
+from wallet_test_base import WalletTestBase
 
 
-class ZECWalletTest(WalletBase, TestCase):
+class ZECWalletTest(WalletTestBase, TestCase):
 
     @patch('wallet_lib.adapters.WalletAdapterBase.run')
     def test_create_address_positive(self, Mock):

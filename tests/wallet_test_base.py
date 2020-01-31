@@ -6,7 +6,7 @@ from wallet_lib.wallet_exceptions import WalletException
 from bitcoinrpc.authproxy import JSONRPCException
 
 
-class WalletBase:
+class WalletTestBase:
 
     def run_positive_case_json(self, Mock, command_run, *args):
         expected_result = {'test123': 'value123'}

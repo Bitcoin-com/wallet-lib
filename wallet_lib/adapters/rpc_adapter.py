@@ -6,14 +6,12 @@ from .wallet_adapter_base import WalletAdapterBase
 
 
 class RPCAdapterException(Exception):
-
     def __init__(self, reason):
         self.reason = reason
         super().__init__(reason)
 
 
 class RPCAdapterResponse:
-
     def __init__(self, result, error=None, code=None):
         self.result = result
         self.error = error
@@ -21,7 +19,6 @@ class RPCAdapterResponse:
 
 
 class RPCAdapter(WalletAdapterBase):
-    
     def __init__(self,
             rpc_user = os.getenv('RPC_USER'),
             rpc_password = os.getenv('RPC_PASSWORD'),
@@ -38,8 +35,8 @@ class RPCAdapter(WalletAdapterBase):
             rpc_connection = AuthServiceProxy(
                 "http://%s:%s@%s:%s" % (self.rpc_user, self.rpc_password, self.rpc_host, self.rpc_port))
             try:
-                response = rpc_connection.batch_(
-                    self._build_args(command, *args))
+                cmd_args = self._build_args(command, *args)
+                response = rpc_connection.batch_(cmd_args)
             except JSONRPCException as e:
                 return RPCAdapterResponse(None, e.message, e.code)
             return RPCAdapterResponse(response[0])

@@ -3,7 +3,6 @@ import abc
 
 from unittest.mock import patch
 from unittest import TestCase
-from wallet_base import WalletBase
 from wallet_lib.wallet_exceptions import WalletException
 from wallet_lib.wallet_base import WalletBase
 from wallet_lib import WalletFactory
@@ -21,6 +20,7 @@ class WalletBaseTest(TestCase):
 
     def test_get_negative_wallet_base_initiate(self):
         try:
+            # pylint: disable=abstract-class-instantiated
             WalletBase()
             assert False
         except TypeError:
@@ -29,6 +29,7 @@ class WalletBaseTest(TestCase):
             assert False
 
         try:
+            # pylint: disable=abstract-class-instantiated
             WalletBase(1,2,3)
             assert False
         except TypeError:

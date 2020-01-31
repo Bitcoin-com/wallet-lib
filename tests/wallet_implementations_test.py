@@ -12,7 +12,7 @@ def test_send_invalid(MockWalletBase):
         wallet = wallet_class(MockWalletBase)
         with pytest.raises(WalletException) as excinfo:
             wallet.send(None, 100)
-        assert "Recipient is invalid" in str(excinfo)
+        assert "Address is invalid" in str(excinfo)
         with pytest.raises(WalletException) as excinfo:
             wallet.send("recipient", 0)
         assert "Amount should be greater than 0" in str(excinfo)
