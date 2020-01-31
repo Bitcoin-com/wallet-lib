@@ -19,15 +19,15 @@ class ZMQNotifier():
     TOPIC_RAWTX = 'rawtx'
 
     def __init__(self, zmq_address, topics=[TOPIC_BLOCKHASH, TOPIC_TXID, TOPIC_RAWBLOCK, TOPIC_RAWBLOCK], loop=None, verbose=False, **kwargs):
+        self.auto = False
+        self.verbose = verbose
         self.zmqContext = zmq.asyncio.Context()
         self.topic_set = set([s.strip() for s in topics])
         self.loop = loop if loop else asyncio.get_event_loop()
-        self.verbose = verbose
-        self.auto = False
 
         earg = 'error_callback'
         ecb = [kwargs[earg]] if earg in kwargs else []
-        self.listeners = {'_error_': ecb }
+        self.listeners = {'__error__': ecb }
 
         self.zmqSubSocket = self.zmqContext.socket(zmq.SUB)
         self.zmqSubSocket.setsockopt(zmq.RCVHWM, 0)
@@ -42,14 +42,13 @@ class ZMQNotifier():
         self.listeners[topic].append(callback)
 
     def add_error_callback(self, callback):
-        self.listeners['_error_'].append(callback)
+        self.listeners['__error__'].append(callback)
 
     async def handle(self):
         try:
             msg = await self.zmqSubSocket.recv_multipart()
             topic = msg[0].decode('utf8')
             body = msg[1]
-
             if topic in self.topic_set:
                 hex_body = binascii.hexlify(body)
                 for callback in self.listeners[topic]:
@@ -62,17 +61,18 @@ class ZMQNotifier():
                             self.loop.create_task(callback(hex_body.decode('utf-8')))
                         else: callback(hex_body.decode('utf-8'))
         except Exception as e:
-            for callback in self.listeners['_error_']:
+            for callback in self.listeners['__error__']:
                 if asyncio.iscoroutinefunction(callback):
                     tb = self.loop.create_task(callback(e))
                 else: tb = callback(e)
                 if tb: traceback.print_exc()
         if self.auto: self.loop.create_task(self.handle())
 
-    def start(self):
+    def start(self, disable_signals=False):
         self.auto = True
-        self.loop.add_signal_handler(signal.SIGTERM, self.stop)
-        self.loop.add_signal_handler(signal.SIGINT, self.stop)
+        if not disable_signals:
+            self.loop.add_signal_handler(signal.SIGTERM, self.stop)
+            self.loop.add_signal_handler(signal.SIGINT, self.stop)
         self.loop.create_task(self.handle())
         self.loop.run_forever()
         return self.loop
