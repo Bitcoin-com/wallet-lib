@@ -1,5 +1,3 @@
-import json
-
 from .adapters import WalletAdapterBase
 from .wallet_exceptions import WalletException
 from .wallet_base import WalletBase
@@ -19,7 +17,7 @@ class DASHWallet(WalletBase):
         self.adapter = adapter
 
     def create_address(self, label=None):
-        label_str = label or '""'
+        label_str = label or ''
         res = self.adapter.run(self._GET_NEW_ADDRESS_COMMAND, label_str)
         if res.error:
             raise WalletException('Failed to create address for {}. Reason: {}. Code: {}'.format(
@@ -41,13 +39,13 @@ class DASHWallet(WalletBase):
         return res.result
 
     def get_transactions(self, label: str = None, count: int = 25, offset: int = 0):
-        label_str = label or '""'
+        label_str = label or ''
         res = self.adapter.run(
             self._LIST_TRANSACTIONS_COMMAND, label_str, count, offset)
         if res.error:
             raise WalletException('Failed to get transactions for {} where count is {} and offset is {}. Reason: {}. Code: {}'.format(
                 label_str, count, offset, res.error, res.code))
-        return json.loads(res.result)
+        return self.load_json(res.result)
 
     def send(self, address:str, amount:int):
         if address is None:
@@ -66,7 +64,7 @@ class DASHWallet(WalletBase):
         if res.error:
             raise WalletException('Failed to get transactions since blockhash: {}. Reason: {}. Code: {}'.format(
                 block_hash, res.error, res.code))
-        return json.loads(res.result)
+        return self.load_json(res.result)
 
     def run(self, command, *args):
         res = self.adapter.run(command, *args)
