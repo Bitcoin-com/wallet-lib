@@ -47,7 +47,7 @@ class ZMQNotifierTest(TestCase):
             expected = {
                 'topic1': [t1cb],
                 'topic2': [t2cb],
-                '_error_': [ecb],
+                '__error__': [ecb],
             }
             
             TestCase().assertDictEqual(expected, actual)
@@ -75,7 +75,7 @@ class ZMQNotifierTest(TestCase):
             expected = {
                 'topic1': [t1cb1, t1cb2],
                 'topic2': [t2cb1, t2cb2],
-                '_error_': [ecb1, ecb2],
+                '__error__': [ecb1, ecb2],
             }
             
             TestCase().assertDictEqual(expected, actual)
