@@ -1,8 +1,15 @@
 class WalletException(Exception):
 
+    def __init__(self, reason, code):
+        self.reason = reason
+        self.code = code
+        super().__init__(reason)
+
+class WalletInputException(WalletException):
+
     def __init__(self, reason):
         self.reason = reason
-        super().__init__(reason)
+        super().__init__(reason, -99)
 
 class WalletIsNotSupportedException(WalletException):
     

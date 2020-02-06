@@ -21,6 +21,9 @@ def test_send_invalid(MockWalletBase):
 @patch('wallet_lib.wallet_base.WalletBase')
 def test_fail_run(MockWalletBase):
 
+    error = "Something went wrong test"
+    code = 322
+
     def adapter_fail(*args):
         mock = Mock()
         mock.error = "Something went wrong test"
@@ -33,9 +36,8 @@ def test_fail_run(MockWalletBase):
         with pytest.raises(WalletException) as excinfo:
             wallet = wallet_class(MockWalletBase)
             wallet.run("command")
-        assert "Failed to run command" in str(excinfo)
-        assert "Reason: Something went wrong test" in str(excinfo)
-        assert "Code: 322" in str(excinfo)
+            assert error == excinfo.reason
+            assert code == excinfo.code
 
 #Generic adapter returns value
 #(This is for the simpler commands that don't need logic to test)

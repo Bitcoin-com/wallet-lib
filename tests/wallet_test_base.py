@@ -33,12 +33,11 @@ class WalletTestBase:
         wallet = WalletAdapterBase()
 
         Mock.return_value = error_bin
-        Mock.side_effect = WalletException(
-            {"code": code, "message": error_bin})
+        Mock.side_effect = WalletException(error_bin, code)
         Mock.returncode = code
 
         with pytest.raises(WalletException) as exc_info:
             command_run(wallet)
 
         Mock.assert_called_once_with(*args)
-        assert error_message == exc_info.value.reason
+        assert error_bin == exc_info.value.reason
