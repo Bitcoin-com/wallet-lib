@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name='wallet_lib',
+    name='wallet_lib-bitcoincomgames',
     version='1.1.0',
     author="Yevhen Fabizhevskyi",
     author_email="fabasoad@gmail.com",
