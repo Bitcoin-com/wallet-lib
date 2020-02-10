@@ -61,7 +61,6 @@ def pass_test(MockWalletBase, method_name, args):
 def test_pass_all_commands(MockWalletBase):
 
     pass_test(MockWalletBase, "create_address", ("label",))
-    pass_test(MockWalletBase, "get_balance", ())
     pass_test(MockWalletBase, "get_transaction", ("tx_id",))
     pass_test(MockWalletBase, "send", ("recipient", 100))
     pass_test(MockWalletBase, "run", ("command", ()))
@@ -70,6 +69,7 @@ def test_pass_all_commands(MockWalletBase):
         return val
 
     with patch('json.loads', fake_json_loads):
+        pass_test(MockWalletBase, "get_balance", ())
         pass_test(MockWalletBase, "get_transactions", (None, 25, 0))
         pass_test(MockWalletBase, "get_transactions_since", ("block_hash",))
 

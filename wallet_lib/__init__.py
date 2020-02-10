@@ -1,3 +1,4 @@
+from .wallet_base import WalletBase
 from .bch_wallet import BCHWallet
 from .btc_wallet import BTCWallet
 from .dash_wallet import DASHWallet

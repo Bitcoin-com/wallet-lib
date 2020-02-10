@@ -7,10 +7,9 @@ from .zmq_notifier import ZMQNotifier
 
 class WalletBase(metaclass=ABCMeta):
 
-    SUPPORTED_JSON_LOADS = [str, bytes, bytearray]
-
-    def load_json(self, val):
-        return json.loads(val) if type(val) in self.SUPPORTED_JSON_LOADS else val
+    def load_json(self, val: str, raw: bool):
+        if raw: return val
+        return json.loads(val)
 
     @abstractmethod
     def __init__(self, *args): pass
@@ -19,7 +18,7 @@ class WalletBase(metaclass=ABCMeta):
     def create_address(self, *args): pass
 
     @abstractmethod
-    def get_balance(self): pass
+    def get_balance(self, *args): pass
 
     @abstractmethod
     def get_transaction(self, *args): pass
