@@ -9,7 +9,7 @@ This library contains classes to work with hot wallet for different cryptocurren
 1. DASH
 1. ZEC
 ### Methods
-1. `wallet.create_address(label=None)` - creates an address (Only BCH supports labels)
+1. `wallet.create_address(label=None)` - creates an address (label is ignored for ZEC)
 1. `wallet.get_balance()` - returns the current balance
 1. `wallet.get_transaction(tx_id)` - returns transaction info by tx id
 1. `wallet.get_transactions(label=None, count=25, offset=0)` - returns list of transactions by label based on count and offset arguments.

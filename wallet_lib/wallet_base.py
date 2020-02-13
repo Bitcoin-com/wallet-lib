@@ -1,10 +1,15 @@
-from abc import ABCMeta, abstractmethod
+import json
 
+from abc import ABCMeta, abstractmethod
 from .adapters import WalletAdapterBase
 from .wallet_exceptions import WalletException
 from .zmq_notifier import ZMQNotifier
 
 class WalletBase(metaclass=ABCMeta):
+
+    def load_json(self, val: str, raw: bool):
+        if raw: return val
+        return json.loads(val)
 
     @abstractmethod
     def __init__(self, *args): pass
@@ -13,7 +18,7 @@ class WalletBase(metaclass=ABCMeta):
     def create_address(self, *args): pass
 
     @abstractmethod
-    def get_balance(self): pass
+    def get_balance(self, *args): pass
 
     @abstractmethod
     def get_transaction(self, *args): pass

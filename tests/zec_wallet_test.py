@@ -21,8 +21,8 @@ class ZECWalletTest(WalletTestBase, TestCase):
     def test_get_balance_positive(self, Mock):
         self.run_positive_case(
             Mock,
-            lambda w: w.run('z_getbalance'),
-            'z_getbalance'
+            lambda w: w.run('z_gettotalbalance'),
+            'z_gettotalbalance'
         )
 
     @patch('wallet_lib.adapters.WalletAdapterBase.run')
