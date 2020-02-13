@@ -29,11 +29,6 @@ jobs:
           python -m pip install -e .
           source .envrc
           pytest --cov=wallet_lib --cov-fail-under=90.00 ./tests/
-  slack:
-    needs: build
-    runs-on: ubuntu-18.04
-    name: Slack notification
-    steps:
       - name: Slack notification Failure
         uses: rtCamp/action-slack-notify@master
         if: failure()

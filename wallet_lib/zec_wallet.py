@@ -26,7 +26,6 @@ class ZECWallet(WalletBase):
         res = self.adapter.run(self._GET_BALANCE_COMMAND)
         if res.error: raise WalletException(res.error, res.code)
         return self.load_json(res.result, raw=raw)
-
     def get_transaction(self, tx_id, raw=True):
         res = self.adapter.run(self._GET_TRANSACTION_COMMAND, tx_id)
         if res.error: raise WalletException(res.error, res.code)
