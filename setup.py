@@ -8,7 +8,7 @@ install_requires = [line.strip()
 
 setuptools.setup(
     name='wallet_lib',
-    version='1.1.1',
+    version='1.2.1',
     author="Bitcoin.com",
     author_email="gamesbot@bitcoin.com",
     description="Package to work with hot wallet for different cryptocurrency",

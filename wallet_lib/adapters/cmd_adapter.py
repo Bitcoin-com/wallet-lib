@@ -19,7 +19,7 @@ class CMDAdapterResponse:
 
 class CMDAdapter(WalletAdapterBase):
     def __init__(self, program_name):
-        self.log = logging.getLogger('CMDAdapter')
+        self.log = logging.getLogger('wallet_lib.cmdadapter')
         self.program_name = program_name
 
     def run(self, command, *args):
