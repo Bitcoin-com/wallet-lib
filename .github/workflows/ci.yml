@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        python-version: [ '3.x' ]
+        python-version: [ '3.6' ]
     name: Python ${{ matrix.python-version }}
     steps:
       - uses: actions/checkout@master
@@ -25,7 +25,8 @@ jobs:
           architecture: x64
       - name: Run tests
         run: |
-          python setup.py install
+          python -m pip install -r requirements.txt
+          python -m pip install -e .
           source .envrc
           pytest --cov=wallet_lib --cov-fail-under=90.00 ./tests/
       - name: Slack notification Failure
