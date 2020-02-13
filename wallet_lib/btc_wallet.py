@@ -20,24 +20,24 @@ class BTCWallet(WalletBase):
         label_str = label or ''
         res = self.adapter.run(self._GET_NEW_ADDRESS_COMMAND, label_str)
         if res.error: raise WalletException(res.error, res.code)
-        return self.load_json(res.result, raw=raw)
+        return self.load_json(res.result, raw)
 
     def get_balance(self, raw=True):
         res = self.adapter.run(self._GET_BALANCE_COMMAND)
         if res.error: raise WalletException(res.error, res.code)
-        return self.load_json(res.result, raw=raw)
+        return self.load_json(res.result, raw)
 
     def get_transaction(self, tx_id, raw=True):
         res = self.adapter.run(self._GET_TRANSACTION_COMMAND, tx_id)
         if res.error: raise WalletException(res.error, res.code)
-        return self.load_json(res.result, raw=raw)
+        return self.load_json(res.result, raw)
 
     def get_transactions(self, label: str = None, count: int = 25, offset: int = 0, raw=False):
         label_str = label or ''
         res = self.adapter.run(
             self._LIST_TRANSACTIONS_COMMAND, label_str, count, offset)
         if res.error: raise WalletException(res.error, res.code)
-        return self.load_json(res.result, raw=raw)
+        return self.load_json(res.result, raw)
 
     def send(self, address:str, amount:int, raw=True):
         if address is None:
@@ -46,15 +46,15 @@ class BTCWallet(WalletBase):
             raise WalletInputException('Amount should be greater than 0')
         res = self.adapter.run(self._SEND_TO_ADDRESS_COMMAND, address, str(amount))
         if res.error: raise WalletException(res.error, res.code)
-        return self.load_json(res.result, raw=raw)
+        return self.load_json(res.result, raw)
 
     def get_transactions_since(self, block_hash, raw=True):
         res = self.adapter.run(
             self._LIST_SINCE_BLOCK_COMMAND, block_hash)
         if res.error: raise WalletException(res.error, res.code)
-        return self.load_json(res.result, raw=raw)
+        return self.load_json(res.result, raw)
 
     def run(self, command, *args, **kwargs):
         res = self.adapter.run(command, *args)
         if res.error: raise WalletException(res.error, res.code)
-        return self.load_json(res.result, raw=kwargs.get('raw', True))
+        return self.load_json(res.result, kwargs.get('raw', True))
