@@ -41,9 +41,9 @@ class RPCAdapter(WalletAdapterBase):
             except JSONRPCException as e:
                 return RPCAdapterResponse(None, e.message, e.code)
             return RPCAdapterResponse(response[0])
-        except Exception as e:
+        except Exception:
             message = 'Failed to run {} command'.format(command)
-            self.log.error(message, e)
+            self.log.debug(message, exc_info=1)
             raise RPCAdapterException(message)
 
     def _build_args(self, command, *args):

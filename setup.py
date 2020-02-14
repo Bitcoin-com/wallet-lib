@@ -8,7 +8,7 @@ install_requires = [line.strip()
 
 setuptools.setup(
     name='wallet_lib',
-    version='1.2.1',
+    version='1.2.2',
     author="Bitcoin.com",
     author_email="gamesbot@bitcoin.com",
     description="Package to work with hot wallet for different cryptocurrency",
@@ -21,6 +21,6 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=install_requires,
+    install_requires=install_requires
     python_requires='>=3.6'
 )
