@@ -8,7 +8,8 @@ from .zmq_notifier import ZMQNotifier
 class WalletBase(metaclass=ABCMeta):
 
     def load_json(self, val: str, raw: bool):
-        if raw: return val
+        if type(val) in [dict, list, float] or raw:
+            return val
         return json.loads(val)
 
     @abstractmethod
