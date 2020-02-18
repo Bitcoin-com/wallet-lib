@@ -1,5 +1,5 @@
 import pytest
-import json
+import simplejson
 
 from wallet_lib.adapters import WalletAdapterBase
 from wallet_lib.wallet_exceptions import WalletException
