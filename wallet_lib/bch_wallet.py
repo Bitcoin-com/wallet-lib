@@ -48,7 +48,7 @@ class BCHWallet(WalletBase):
         if res.error: raise WalletException(res.error, res.code)
         return self.load_json(res.result, raw)
 
-    def get_transactions_since(self, blockhash=None, target_confirmations=1 raw=True):
+    def get_transactions_since(self, blockhash=None, target_confirmations=1, raw=True):
         res = self.adapter.run( self._LIST_SINCE_BLOCK_COMMAND, blockhash or '', target_confirmations)
         if res.error: raise WalletException(res.error, res.code)
         return self.load_json(res.result, raw)
