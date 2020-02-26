@@ -1,6 +1,6 @@
 import pytest
-import simplejson
 
+from simplejson import loads
 from wallet_lib.adapters import WalletAdapterBase
 from wallet_lib.wallet_exceptions import WalletException
 from bitcoinrpc.authproxy import JSONRPCException
@@ -26,7 +26,7 @@ class WalletTestBase:
         Mock.assert_called_once_with(*args)
 
         if(type(expected_result) == dict and type(actual_result) != dict):
-            actual_result = json.loads(actual_result)
+            actual_result = loads(actual_result)
         assert expected_result == actual_result
 
     def run_negative_case(self, Mock, command_run, error_bin, code, error_message, *args):

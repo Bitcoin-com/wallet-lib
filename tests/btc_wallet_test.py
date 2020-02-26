@@ -52,12 +52,14 @@ class BTCWalletTest(WalletTestBase, TestCase):
 
     @patch('wallet_lib.adapters.WalletAdapterBase.run')
     def test_get_transactions_since_positive(self, Mock):
-        block_hash = 'hash123'
+        blockhash = 'hash123'
+        target_conf = 1
         self.run_positive_case_json(
             Mock,
-            lambda w: w.run('listsinceblock',  block_hash),
+            lambda w: w.run('listsinceblock',  blockhash, target_conf),
             'listsinceblock',
-            block_hash
+            blockhash,
+            target_conf,
         )
 
     @patch('wallet_lib.adapters.WalletAdapterBase.run')
