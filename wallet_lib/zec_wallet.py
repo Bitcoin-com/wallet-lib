@@ -32,7 +32,7 @@ class ZECWallet(WalletBase):
         return self.load_json(res.result, raw)
 
     def get_transactions(self, label: str = None, count: int = 25, offset: int = 0, raw=False):
-        label_str = label or ''
+        label_str = label or '*'
         res = self.adapter.run(
             self._LIST_TRANSACTIONS_COMMAND, label_str, count, offset)
         if res.error: raise WalletException(res.error, res.code)
@@ -47,9 +47,8 @@ class ZECWallet(WalletBase):
         if res.error: raise WalletException(res.error, res.code)
         return self.load_json(res.result, raw)
 
-    def get_transactions_since(self, block_hash, raw=True):
-        res = self.adapter.run(
-            self._LIST_SINCE_BLOCK_COMMAND, block_hash)
+    def get_transactions_since(self, blockhash=None, target_confirmations=1, raw=True):
+        res = self.adapter.run( self._LIST_SINCE_BLOCK_COMMAND, blockhash or '', target_confirmations)
         if res.error: raise WalletException(res.error, res.code)
         return self.load_json(res.result, raw)
 

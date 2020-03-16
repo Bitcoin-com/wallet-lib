@@ -28,9 +28,9 @@ class CMDAdapter(WalletAdapterBase):
                 command, *args), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             o, e = proc.communicate(timeout=10)
             return CMDAdapterResponse(o.decode('ascii').strip(), e.decode('ascii').strip(), proc.returncode)
-        except Exception as e:
+        except Exception:
             message = 'Failed to run {} command'.format(command)
-            self.log.error(message, e)
+            self.log.error(message, exc_info=1)
             raise CMDAdapterException(message)
 
     def _build_args(self, command, *args):

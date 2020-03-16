@@ -25,9 +25,10 @@ jobs:
           architecture: x64
       - name: Run tests
         run: |
+          python -m pip install -r test_requirements.txt
           python -m pip install -r requirements.txt
           python -m pip install -e .
-          source .envrc
+          source tests/.envrc
           pytest --cov=wallet_lib --cov-fail-under=90.00 ./tests/
       - name: Slack notification Failure
         uses: rtCamp/action-slack-notify@master
